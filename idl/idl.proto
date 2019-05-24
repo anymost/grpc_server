@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package idl;
+
+service GRPCService {
+    rpc AddUser (UserInfo) returns (UserBrief) {}
+    rpc GetFriends (UserBrief) returns (stream UserDetail) {}
+    rpc AddFrieds (stream UserInfo) returns (ResponseStatus) {}
+    rpc UserList (stream UserBrief) returns (stream UserDetail) {}
+}
+
+enum Gender {
+    MALE = 0;
+    FEMALE = 1;
+}
+
+message ResponseStatus {
+    bool ok = 1;
+}
+
+message UserBrief {
+    int32 id = 1;
+}
+
+message UserInfo {
+    string name = 2;
+    Gender gender = 3;
+    string address = 4;
+}
+
+
+message UserDetail {
+    int32 id = 1;
+    string name = 2;
+    Gender gender = 3;
+    string address = 4;
+}
