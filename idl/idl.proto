@@ -5,7 +5,7 @@ package idl;
 service GRPCService {
     rpc AddUser (UserInfo) returns (UserBrief) {}
     rpc GetFriends (UserBrief) returns (stream UserDetail) {}
-    rpc AddFrieds (stream UserInfo) returns (ResponseStatus) {}
+    rpc AddFriends (stream FriendPayload) returns (ResponseStatus) {}
     rpc UserList (stream UserBrief) returns (stream UserDetail) {}
 }
 
@@ -22,6 +22,11 @@ message UserBrief {
     int32 id = 1;
 }
 
+message FriendPayload {
+    int32 userId = 1;
+    int32 friendId = 2;
+}
+
 message UserInfo {
     string name = 2;
     Gender gender = 3;
@@ -34,4 +39,5 @@ message UserDetail {
     string name = 2;
     Gender gender = 3;
     string address = 4;
+    repeated int32 friends = 5;
 }
