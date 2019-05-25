@@ -11,7 +11,7 @@ import (
 )
 
 func AddUser(client pb.GRPCServiceClient) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	for i := 0; i < 10000; i++ {
 		user := &pb.UserInfo{
