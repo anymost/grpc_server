@@ -11,12 +11,12 @@ import (
 )
 
 func AddUser(client pb.GRPCServiceClient) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	for i := 0; i < 10000; i++ {
 		user := &pb.UserInfo{
-			Name: fmt.Sprintf("user%d", i),
-			Gender: pb.Gender_MALE,
+			Name:    fmt.Sprintf("user%d", i),
+			Gender:  pb.Gender_MALE,
 			Address: "Japan",
 		}
 		val, err := client.AddUser(ctx, user)
@@ -29,7 +29,7 @@ func AddUser(client pb.GRPCServiceClient) {
 
 }
 
-func AddFriends(client pb.GRPCServiceClient)  {
+func AddFriends(client pb.GRPCServiceClient) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	stream, err := client.AddFriends(ctx)
@@ -37,9 +37,9 @@ func AddFriends(client pb.GRPCServiceClient)  {
 		log.Fatal(err)
 	}
 	friends := []*pb.FriendPayload{
-		&pb.FriendPayload{UserId:1, FriendId: 2},
-		&pb.FriendPayload{UserId:1, FriendId: 3},
-		&pb.FriendPayload{UserId:2, FriendId: 3},
+		&pb.FriendPayload{UserId: 1, FriendId: 2},
+		&pb.FriendPayload{UserId: 1, FriendId: 3},
+		&pb.FriendPayload{UserId: 2, FriendId: 3},
 	}
 	for _, friend := range friends {
 		err := stream.Send(friend)
@@ -54,7 +54,7 @@ func AddFriends(client pb.GRPCServiceClient)  {
 	log.Println(val)
 }
 
-func GetFriends(client pb.GRPCServiceClient)  {
+func GetFriends(client pb.GRPCServiceClient) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	stream, err := client.GetFriends(ctx, &pb.UserBrief{Id: 1})
@@ -104,7 +104,6 @@ func UserList(client pb.GRPCServiceClient) {
 		}
 	}
 }
-
 
 func main() {
 	conn, err := grpc.Dial("localhost:6001", grpc.WithInsecure())
