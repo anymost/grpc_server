@@ -13,24 +13,12 @@ import (
 func AddUser(client pb.GRPCServiceClient) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	users := []*pb.UserInfo{
-		&pb.UserInfo{
-			Name: "rose",
+	for i := 0; i < 10000; i++ {
+		user := &pb.UserInfo{
+			Name: fmt.Sprintf("user%d", i),
 			Gender: pb.Gender_MALE,
 			Address: "Japan",
-		},
-		&pb.UserInfo{
-			Name: "jack",
-			Gender: pb.Gender_MALE,
-			Address: "USA",
-		},
-		&pb.UserInfo{
-			Name: "mimi",
-			Gender: pb.Gender_FEMALE,
-			Address: "China",
-		},
-	}
-	for _, user := range users {
+		}
 		val, err := client.AddUser(ctx, user)
 		if err != nil {
 			log.Fatal(err)
@@ -124,8 +112,8 @@ func main() {
 		log.Fatal(err)
 	}
 	client := pb.NewGRPCServiceClient(conn)
-	// AddUser(client)
-	// AddFriends(client)
-	// GetFriends(client)
+	AddUser(client)
+	AddFriends(client)
+	GetFriends(client)
 	UserList(client)
 }
